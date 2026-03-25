@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name: skybook-api
+    runtime: java
+    buildCommand: ./mvnw clean package -DskipTests
+    startCommand: java -jar target/skybook-api-0.0.1-SNAPSHOT.jar
+    envVars:
+      - key: JAVA_VERSION
+        value: "17"
+      - key: SERVER_PORT
+        value: "10000"
