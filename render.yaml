@@ -2,6 +2,3 @@ services:
   - type: web
     name: skybook-api
     runtime: docker
-    envVars:
-      - key: PORT
-        value: "8080"
