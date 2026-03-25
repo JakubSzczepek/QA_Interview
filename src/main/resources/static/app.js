@@ -27,17 +27,36 @@ function openRecruiterModal() {
 function closeRecruiterModal(e) {
   if (e.target === e.currentTarget) document.getElementById('recruiterModal').classList.remove('open');
 }
-function checkRecruiterPassword() {
+async function checkRecruiterPassword() {
   const input = document.getElementById('recruiterPassword');
   const error = document.getElementById('gateError');
-  if (input.value === 'rekrutacjaJava') {
-    document.getElementById('recruiterGate').style.display = 'none';
-    document.getElementById('recruiterContent').style.display = 'block';
-    error.textContent = '';
-  } else {
-    error.textContent = '\u274c Nieprawid\u0142owe has\u0142o';
-    input.value = '';
-    input.focus();
+  const btn = document.querySelector('.gate-btn');
+  btn.disabled = true;
+  btn.textContent = '...';
+  try {
+    const res = await fetch('/api/v1/recruiter/verify', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ password: input.value })
+    });
+    if (res.ok) {
+      const data = await res.json();
+      document.getElementById('recruiterGate').style.display = 'none';
+      const el = document.getElementById('recruiterContent');
+      el.innerHTML = data.content;
+      el.style.display = 'block';
+      error.textContent = '';
+    } else {
+      error.textContent = '\u274c Nieprawid\u0142owe has\u0142o';
+      input.value = '';
+      input.focus();
+    }
+  } catch (e) {
+    console.error('[recruiter]', e);
+    error.textContent = '\u274c B\u0142\u0105d po\u0142\u0105czenia';
+  } finally {
+    btn.disabled = false;
+    btn.textContent = 'Odblokuj';
   }
 }
 

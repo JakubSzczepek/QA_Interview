@@ -32,8 +32,8 @@ public class RequestResponseLoggingFilter implements Filter {
 
         String uri = request.getRequestURI();
 
-        // Only log API calls (skip static, swagger, actuator, logs endpoint itself)
-        if (!uri.startsWith("/api/") || uri.startsWith("/api/v1/logs")) {
+        // Only log API calls (skip static, swagger, actuator, logs and recruiter endpoints)
+        if (!uri.startsWith("/api/") || uri.startsWith("/api/v1/logs") || uri.startsWith("/api/v1/recruiter")) {
             chain.doFilter(request, response);
             return;
         }
