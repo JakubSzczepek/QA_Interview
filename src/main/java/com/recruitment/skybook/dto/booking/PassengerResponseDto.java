@@ -10,5 +10,4 @@ public class PassengerResponseDto {
     private ContactDto contact;
     private SeatAssignmentDto seatAssignment;
     private List<BaggageDto> baggage;
-    private List<String> specialRequests;
 }

@@ -32,8 +32,6 @@ public class AirportService {
         List<TerminalDto> terminalDtos = airport.getTerminals().stream().map(t ->
                 TerminalDto.builder()
                         .name(t.getName())
-                        .gates(t.getGates())
-                        .facilities(t.getFacilities())
                         .build()
         ).collect(Collectors.toList());
 

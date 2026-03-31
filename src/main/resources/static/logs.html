@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pl">
+<html lang="pl" data-i18n-title="page.title.logs">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -224,7 +224,7 @@
 <body>
 
   <header class="topbar">
-    <div class="topbar-brand"><a href="/" title="REST Client">✈ SkyBook API</a> — Logi</div>
+    <div class="topbar-brand"><a href="/" title="REST Client">✈ SkyBook API</a> <span data-i18n="logs.brand.suffix">— Logi</span></div>
     <div class="topbar-links">
       <a href="/" title="REST Client">🌐 REST Client</a>
       <a href="/swagger-ui.html" target="_blank" title="Swagger UI">📄 Swagger</a>
@@ -257,24 +257,25 @@
 
     <span class="count-badge" id="countBadge">0 entries</span>
 
-    <button class="btn btn-accent" onclick="fetchLogs()" title="Odśwież">↻ Odśwież</button>
+    <button class="btn btn-accent" onclick="fetchLogs()" data-i18n-title="logs.btn.refresh.title" title="Odśwież"><span data-i18n="logs.btn.refresh">↻ Odśwież</span></button>
 
     <button class="btn" id="autoRefreshBtn" onclick="toggleAutoRefresh()" title="Auto-refresh">
       ⏱ Auto: OFF
     </button>
 
-    <button class="btn btn-danger" onclick="clearLogs()" title="Wyczyść logi">🗑 Wyczyść</button>
+    <button class="btn btn-danger" onclick="clearLogs()" data-i18n-title="logs.btn.clear.title" title="Wyczyść logi"><span data-i18n="logs.btn.clear">🗑 Wyczyść</span></button>
   </div>
 
   <div class="log-container" id="logContainer">
-    <div class="log-empty" id="emptyState">Brak logów — wyślij request z REST Clienta</div>
+    <div class="log-empty" id="emptyState" data-i18n="logs.empty">Brak logów — wyślij request z REST Clienta</div>
   </div>
 
   <footer class="status-bar">
-    <span id="statusText">Ostatnie odświeżenie: —</span>
-    <span>Max 500 wpisów w pamięci</span>
+    <span id="statusText" data-i18n="logs.last.refresh">Ostatnie odświeżenie: —</span>
+    <span data-i18n="logs.max.entries">Max 500 wpisów w pamięci</span>
   </footer>
 
+  <script src="i18n.js?v=1"></script>
 <script>
   let logs = [];
   let autoRefreshInterval = null;
@@ -286,15 +287,15 @@
       logs = await res.json();
       renderLogs();
       document.getElementById('statusText').textContent =
-        'Ostatnie odświeżenie: ' + new Date().toLocaleTimeString('pl-PL');
+        window.i18n.t('logs.last.refresh') + new Date().toLocaleTimeString(window.i18n.locale());
     } catch (e) {
-      document.getElementById('statusText').textContent = 'Błąd połączenia z API';
+      document.getElementById('statusText').textContent = window.i18n.t('logs.connect.error');
     }
   }
 
   // --- Clear logs ---
   async function clearLogs() {
-    if (!confirm('Wyczyścić wszystkie logi?')) return;
+    if (!confirm(window.i18n.t('logs.clear.confirm'))) return;
     await fetch('/api/v1/logs', { method: 'DELETE' });
     fetchLogs();
   }
@@ -305,11 +306,11 @@
     if (autoRefreshInterval) {
       clearInterval(autoRefreshInterval);
       autoRefreshInterval = null;
-      btn.textContent = '⏱ Auto: OFF';
+      btn.textContent = window.i18n.t('logs.auto.off');
       btn.classList.remove('btn-accent');
     } else {
       autoRefreshInterval = setInterval(fetchLogs, 2000);
-      btn.textContent = '⏱ Auto: ON (2s)';
+      btn.textContent = window.i18n.t('logs.auto.on');
       btn.classList.add('btn-accent');
     }
   }
@@ -335,8 +336,8 @@
     if (filtered.length === 0) {
       container.innerHTML = '';
       container.appendChild(createEmpty(logs.length === 0
-        ? 'Brak logów — wyślij request z REST Clienta'
-        : 'Brak wyników dla aktywnych filtrów'));
+        ? window.i18n.t('logs.empty')
+        : window.i18n.t('logs.no.results')));
       return;
     }
 
@@ -408,6 +409,7 @@
 
   // --- Initial load ---
   fetchLogs();
+  window.addEventListener('langChanged', () => renderLogs());
 </script>
 </body>
 </html>

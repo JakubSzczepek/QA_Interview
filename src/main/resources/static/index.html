@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pl" data-i18n-title="page.title.main">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -11,9 +11,10 @@
   <header class="topbar">
     <div class="topbar-brand">✈ SkyBook API — REST Client</div>
     <div class="topbar-links">
-      <button class="topbar-btn" onclick="toggleTaskModal()" title="Opis zadania">📋 Zadanie</button>
-      <button class="topbar-btn" onclick="openRecruiterModal()" title="Arkusz rekrutera">🔒 Rekruter</button>
-      <a href="/logs.html" title="Logi API (RQ/RS)">📊 Logi</a>
+      <button class="topbar-btn" onclick="toggleTaskModal()" data-i18n-title="nav.task.title" title="Opis zadania"><span data-i18n="nav.task">📋 Zadanie</span></button>
+      <button class="topbar-btn" onclick="openRecruiterModal()" data-i18n-title="nav.recruiter.title" title="Arkusz rekrutera"><span data-i18n="nav.recruiter">🔒 Rekruter</span></button>
+      <a href="/logs.html" data-i18n-title="nav.logs.title" title="Logi API (RQ/RS)"><span data-i18n="nav.logs">📊 Logi</span></a>
+      <a href="/starter.html" data-i18n-title="nav.starter.title" title="Test Starter Kit — szkielet projektu testowego">🧪 Starter Kit</a>
       <a href="/swagger-ui.html" target="_blank" title="Swagger UI">📄 Swagger</a>
     </div>
   </header>
@@ -114,138 +115,275 @@
   <div class="modal-overlay" id="taskModal" onclick="closeTaskModal(event)">
     <div class="modal">
       <div class="modal-header">
-        <h2>✈ SkyBook API — Zadanie testowe QA</h2>
-        <button class="modal-close" onclick="toggleTaskModal()" title="Zamknij">✕</button>
+        <h2>
+          <span data-lang="pl">✈ SkyBook API — Zadanie testowe QA</span>
+          <span data-lang="en" style="display:none">✈ SkyBook API — QA Testing Task</span>
+        </h2>
+        <button class="modal-close" onclick="toggleTaskModal()" data-i18n-title="modal.task.close" title="Zamknij">✕</button>
       </div>
       <div class="modal-body">
 
-        <h3>Kontekst</h3>
-        <p><strong>SkyBook</strong> to REST API systemu rezerwacji lotów i zarządzania biletami lotniczymi. API obsługuje:</p>
-        <ul>
-          <li>Zarządzanie lotami (CRUD)</li>
-          <li>Rezerwacje z pasażerami, miejscami i płatnościami</li>
-          <li>Baza lotnisk</li>
-          <li>Przeliczanie walut</li>
-        </ul>
+        <!-- ── Polish content ── -->
+        <div data-lang="pl">
+          <h3>Kontekst</h3>
+          <p><strong>SkyBook</strong> to REST API systemu rezerwacji lotów i zarządzania biletami lotniczymi. API obsługuje:</p>
+          <ul>
+            <li>Zarządzanie lotami (CRUD)</li>
+            <li>Rezerwacje z pasażerami, miejscami i płatnościami</li>
+            <li>Baza lotnisk</li>
+            <li>Przeliczanie walut</li>
+          </ul>
 
-        <h3>Twoje zadanie <span class="badge">30 min</span></h3>
-        <ol>
-          <li>Zapoznaj się z API korzystając z dostępnych narzędzi</li>
-          <li>Przetestuj API pod kątem poprawności działania — szczególnie pod kątem poniższych reguł biznesowych</li>
-          <li>Zaraportuj znalezione błędy</li>
-        </ol>
+          <h3>Twoje zadanie <span class="badge" data-i18n="task.writeTests"></span></h3>
+          <ol>
+            <li>Zapoznaj się z API korzystając z dostępnych narzędzi</li>
+            <li>Przetestuj API pod kątem poprawności działania — szczególnie pod kątem poniższych reguł biznesowych</li>
+            <li>Zaraportuj znalezione błędy</li>
+          </ol>
 
-        <div class="tip-box">
-          💡 <strong>Wskazówka:</strong> REST Client ma 12 gotowych requestów w panelu bocznym — możesz je wysyłać od razu lub modyfikować. Nie musisz pisać JSON od zera.
+          <div class="tip-box">
+            💡 <strong>Wskazówka:</strong> REST Client ma 12 gotowych requestów w panelu bocznym — możesz je wysyłać od razu lub modyfikować. Nie musisz pisać JSON od zera.
+          </div>
+
+          <h3>Endpointy API</h3>
+
+          <h4>Flights (Loty)</h4>
+          <table>
+            <thead><tr><th>Method</th><th>Endpoint</th><th>Opis</th></tr></thead>
+            <tbody>
+              <tr><td><code>GET</code></td><td><code>/api/v1/flights?page=0&amp;size=10</code></td><td>Lista lotów (paginowana)</td></tr>
+              <tr><td><code>GET</code></td><td><code>/api/v1/flights/{id}</code></td><td>Szczegóły lotu</td></tr>
+              <tr><td><code>POST</code></td><td><code>/api/v1/flights</code></td><td>Utwórz lot</td></tr>
+              <tr><td><code>PUT</code></td><td><code>/api/v1/flights/{id}</code></td><td>Zaktualizuj lot</td></tr>
+              <tr><td><code>DELETE</code></td><td><code>/api/v1/flights/{id}</code></td><td>Usuń lot</td></tr>
+              <tr><td><code>GET</code></td><td><code>/api/v1/flights/search?origin=...&amp;destination=...&amp;date=...</code></td><td>Wyszukaj loty</td></tr>
+            </tbody>
+          </table>
+
+          <h4>Bookings (Rezerwacje)</h4>
+          <table>
+            <thead><tr><th>Method</th><th>Endpoint</th><th>Opis</th></tr></thead>
+            <tbody>
+              <tr><td><code>GET</code></td><td><code>/api/v1/bookings?page=0&amp;size=10</code></td><td>Lista rezerwacji</td></tr>
+              <tr><td><code>GET</code></td><td><code>/api/v1/bookings/{id}</code></td><td>Szczegóły rezerwacji</td></tr>
+              <tr><td><code>POST</code></td><td><code>/api/v1/bookings</code></td><td>Utwórz rezerwację</td></tr>
+              <tr><td><code>PATCH</code></td><td><code>/api/v1/bookings/{id}/status</code></td><td>Zmień status rezerwacji</td></tr>
+            </tbody>
+          </table>
+
+          <h4>Airports (Lotniska) — tylko odczyt</h4>
+          <table>
+            <thead><tr><th>Method</th><th>Endpoint</th><th>Opis</th></tr></thead>
+            <tbody>
+              <tr><td><code>GET</code></td><td><code>/api/v1/airports</code></td><td>Lista lotnisk</td></tr>
+              <tr><td><code>GET</code></td><td><code>/api/v1/airports/{code}</code></td><td>Lotnisko po kodzie IATA</td></tr>
+            </tbody>
+          </table>
+
+          <h4>Pricing (Cennik)</h4>
+          <table>
+            <thead><tr><th>Method</th><th>Endpoint</th><th>Opis</th></tr></thead>
+            <tbody>
+              <tr><td><code>GET</code></td><td><code>/api/v1/pricing/convert?amount=100&amp;from=EUR&amp;to=USD</code></td><td>Przelicz walutę</td></tr>
+              <tr><td><code>GET</code></td><td><code>/api/v1/pricing/rates</code></td><td>Aktualne kursy walut</td></tr>
+            </tbody>
+          </table>
+
+          <h3>Reguły biznesowe</h3>
+          <table class="rules-table">
+            <thead><tr><th>#</th><th>Reguła</th><th>Opis</th></tr></thead>
+            <tbody>
+              <tr><td>BR-01</td><td>Numer lotu</td><td>Wymagany, unikalny, format: 2–3 litery + <code>-</code> + 1–5 cyfr (np. <code>SB-1234</code>)</td></tr>
+              <tr><td>BR-02</td><td>Segmenty lotu</td><td>Min. 1 wymagany; lot bezpośredni = 1 segment, z przesiadką = 2+</td></tr>
+              <tr><td>BR-03</td><td>Segment: departure/arrival</td><td><code>airportCode</code> – IATA 3 litery; <code>dateTime</code> – ISO 8601; arrival po departure; <code>durationMinutes</code> &gt; 0</td></tr>
+              <tr><td>BR-04</td><td>Segment: aircraft</td><td>Obiekt wymagany; <code>model</code> 1–100 znaków</td></tr>
+              <tr><td>BR-05</td><td>Cena bazowa i waluta</td><td><code>baseFare</code> ≥ 0.00, max 2 dec; <code>currency</code> ∈ {USD, EUR, GBP, PLN}</td></tr>
+              <tr><td>BR-06</td><td>Podatki</td><td>Opcjonalne; <code>code</code> 2 wielkie litery, unikalny; <code>amount</code> ≥ 0.00</td></tr>
+              <tr><td>BR-07</td><td>Opłaty</td><td>Opcjonalne; <code>feeCode</code> unikalny; <code>amount</code> ≥ 0.00; max 10 opłat</td></tr>
+              <tr><td>BR-08</td><td>Suma ceny</td><td>Auto: <code>baseFare + Σtaxes + Σfees − discount</code>; wartość musi być poprawna</td></tr>
+              <tr><td>BR-09</td><td>Rabat</td><td>Opcjonalny; <code>percentage</code> 0–100; <code>validUntil</code> nie w przeszłości</td></tr>
+              <tr><td>BR-10</td><td>Dostępne miejsca</td><td>Zmniejszane przy rezerwacji, przywracane przy anulowaniu</td></tr>
+              <tr><td>BR-11</td><td>Pasażerowie</td><td>Min. 1, max 9 na rezerwację</td></tr>
+              <tr><td>BR-12</td><td>Dane pasażera</td><td><code>firstName</code>/<code>lastName</code> 1–100 zn; <code>dateOfBirth</code> ISO; <code>email</code> poprawny; <code>phone</code> międzynarodowy</td></tr>
+              <tr><td>BR-13</td><td>Przydział miejsca</td><td><code>seatNumber</code> unikalny w locie; <code>class</code> ∈ {ECONOMY, BUSINESS, FIRST}; <code>type</code> ∈ {WINDOW, MIDDLE, AISLE}</td></tr>
+              <tr><td>BR-14</td><td>Płatność</td><td>Wymagana; <code>method</code> ∈ {CREDIT_CARD, DEBIT_CARD, BANK_TRANSFER, BLIK}; <code>cardDetails</code> wymagane dla kart</td></tr>
+              <tr><td>BR-15</td><td>Status rezerwacji</td><td>PENDING → CONFIRMED, PENDING → CANCELLED, CONFIRMED → CANCELLED; brak cofania</td></tr>
+              <tr><td>BR-16</td><td>Usunięcie lotu</td><td>Nie można usunąć lotu z rezerwacjami</td></tr>
+              <tr><td>BR-17</td><td>Przeliczanie walut</td><td>Poprawne przeliczanie między USD, EUR, GBP, PLN</td></tr>
+              <tr><td>BR-18</td><td>Paginacja</td><td>Domyślnie: page=0, size=10, max size=100</td></tr>
+              <tr><td>BR-19</td><td>Wyszukiwanie lotów</td><td>Case-insensitive, partial match</td></tr>
+              <tr><td>BR-20</td><td>HTTP Status Codes</td><td>POST → 201, DELETE → 204, Not Found → 404, Validation → 400</td></tr>
+            </tbody>
+          </table>
+
+          <h3>Oczekiwany format raportu błędu</h3>
+          <table>
+            <thead><tr><th>Pole</th><th>Opis</th></tr></thead>
+            <tbody>
+              <tr><td><strong>Tytuł</strong></td><td>Krótki, jednoznaczny opis problemu</td></tr>
+              <tr><td><strong>Kroki reprodukcji</strong></td><td>Numerowane kroki (endpoint, metoda, body)</td></tr>
+              <tr><td><strong>Oczekiwany rezultat</strong></td><td>Co powinno się stać wg reguł biznesowych</td></tr>
+              <tr><td><strong>Faktyczny rezultat</strong></td><td>Co faktycznie się dzieje</td></tr>
+              <tr><td><strong>Severity</strong></td><td>Critical / Major / Minor</td></tr>
+            </tbody>
+          </table>
+
+          <div class="example-box">
+            <strong>Przykład raportu:</strong><br><br>
+            <strong>Tytuł:</strong> GET /api/v1/flights zwraca 500 zamiast pustej listy gdy brak lotów<br><br>
+            <strong>Kroki reprodukcji:</strong><br>
+            1. Usuń wszystkie loty<br>
+            2. Wyślij <code>GET /api/v1/flights</code><br><br>
+            <strong>Oczekiwany rezultat:</strong> 200 OK z pustą listą <code>{ "content": [], "totalElements": 0 }</code><br><br>
+            <strong>Faktyczny rezultat:</strong> 500 Internal Server Error<br><br>
+            <strong>Severity:</strong> Major
+          </div>
+
+          <h3>Dane testowe</h3>
+          <p>API posiada wstępnie załadowane dane:</p>
+          <ul>
+            <li><strong>6 lotnisk:</strong> WAW, FRA, LHR, JFK, CDG, BCN</li>
+            <li><strong>5 lotów:</strong> SB-1234, SB-5678, SB-9012, SB-3456, SB-7890</li>
+            <li><strong>3 rezerwacje</strong> (statusy: CONFIRMED, PENDING, CANCELLED)</li>
+            <li><strong>Waluty:</strong> EUR (bazowa), USD, GBP, PLN</li>
+          </ul>
+          <div class="tip-box">
+            ℹ <strong>Uwaga:</strong> Baza danych jest resetowana przy każdym restarcie API.
+          </div>
+
+          <p class="good-luck">Powodzenia! 🚀</p>
         </div>
 
-        <h3>Endpointy API</h3>
+        <!-- ── English content ── -->
+        <div data-lang="en" style="display:none">
+          <h3>Context</h3>
+          <p><strong>SkyBook</strong> is a REST API for a flight booking and airline ticketing system. The API supports:</p>
+          <ul>
+            <li>Flight management (CRUD)</li>
+            <li>Bookings with passengers, seats and payments</li>
+            <li>Airport database</li>
+            <li>Currency conversion</li>
+          </ul>
 
-        <h4>Flights (Loty)</h4>
-        <table>
-          <thead><tr><th>Method</th><th>Endpoint</th><th>Opis</th></tr></thead>
-          <tbody>
-            <tr><td><code>GET</code></td><td><code>/api/v1/flights?page=0&amp;size=10</code></td><td>Lista lotów (paginowana)</td></tr>
-            <tr><td><code>GET</code></td><td><code>/api/v1/flights/{id}</code></td><td>Szczegóły lotu</td></tr>
-            <tr><td><code>POST</code></td><td><code>/api/v1/flights</code></td><td>Utwórz lot</td></tr>
-            <tr><td><code>PUT</code></td><td><code>/api/v1/flights/{id}</code></td><td>Zaktualizuj lot</td></tr>
-            <tr><td><code>DELETE</code></td><td><code>/api/v1/flights/{id}</code></td><td>Usuń lot</td></tr>
-            <tr><td><code>GET</code></td><td><code>/api/v1/flights/search?origin=...&amp;destination=...&amp;date=...</code></td><td>Wyszukaj loty</td></tr>
-          </tbody>
-        </table>
+          <h3>Your task <span class="badge" data-i18n="task.writeTests"></span></h3>
+          <ol>
+            <li>Explore the API using the available tools</li>
+            <li>Test the API for correctness — especially against the business rules below</li>
+            <li>Report the bugs you find</li>
+          </ol>
 
-        <h4>Bookings (Rezerwacje)</h4>
-        <table>
-          <thead><tr><th>Method</th><th>Endpoint</th><th>Opis</th></tr></thead>
-          <tbody>
-            <tr><td><code>GET</code></td><td><code>/api/v1/bookings?page=0&amp;size=10</code></td><td>Lista rezerwacji</td></tr>
-            <tr><td><code>GET</code></td><td><code>/api/v1/bookings/{id}</code></td><td>Szczegóły rezerwacji</td></tr>
-            <tr><td><code>POST</code></td><td><code>/api/v1/bookings</code></td><td>Utwórz rezerwację</td></tr>
-            <tr><td><code>PATCH</code></td><td><code>/api/v1/bookings/{id}/status</code></td><td>Zmień status rezerwacji</td></tr>
-          </tbody>
-        </table>
+          <div class="tip-box">
+            💡 <strong>Tip:</strong> REST Client has 12 ready-to-use requests in the sidebar — you can send them immediately or modify them. No need to write JSON from scratch.
+          </div>
 
-        <h4>Airports (Lotniska) — tylko odczyt</h4>
-        <table>
-          <thead><tr><th>Method</th><th>Endpoint</th><th>Opis</th></tr></thead>
-          <tbody>
-            <tr><td><code>GET</code></td><td><code>/api/v1/airports</code></td><td>Lista lotnisk</td></tr>
-            <tr><td><code>GET</code></td><td><code>/api/v1/airports/{code}</code></td><td>Lotnisko po kodzie IATA</td></tr>
-          </tbody>
-        </table>
+          <h3>API Endpoints</h3>
 
-        <h4>Pricing (Cennik)</h4>
-        <table>
-          <thead><tr><th>Method</th><th>Endpoint</th><th>Opis</th></tr></thead>
-          <tbody>
-            <tr><td><code>GET</code></td><td><code>/api/v1/pricing/convert?amount=100&amp;from=EUR&amp;to=USD</code></td><td>Przelicz walutę</td></tr>
-            <tr><td><code>GET</code></td><td><code>/api/v1/pricing/rates</code></td><td>Aktualne kursy walut</td></tr>
-          </tbody>
-        </table>
+          <h4>Flights</h4>
+          <table>
+            <thead><tr><th>Method</th><th>Endpoint</th><th>Description</th></tr></thead>
+            <tbody>
+              <tr><td><code>GET</code></td><td><code>/api/v1/flights?page=0&amp;size=10</code></td><td>List of flights (paginated)</td></tr>
+              <tr><td><code>GET</code></td><td><code>/api/v1/flights/{id}</code></td><td>Flight details</td></tr>
+              <tr><td><code>POST</code></td><td><code>/api/v1/flights</code></td><td>Create flight</td></tr>
+              <tr><td><code>PUT</code></td><td><code>/api/v1/flights/{id}</code></td><td>Update flight</td></tr>
+              <tr><td><code>DELETE</code></td><td><code>/api/v1/flights/{id}</code></td><td>Delete flight</td></tr>
+              <tr><td><code>GET</code></td><td><code>/api/v1/flights/search?origin=...&amp;destination=...&amp;date=...</code></td><td>Search flights</td></tr>
+            </tbody>
+          </table>
 
-        <h3>Reguły biznesowe</h3>
-        <table class="rules-table">
-          <thead><tr><th>#</th><th>Reguła</th><th>Opis</th></tr></thead>
-          <tbody>
-            <tr><td>BR-01</td><td>Numer lotu</td><td>Wymagany, unikalny, format: 2–3 litery + <code>-</code> + 1–5 cyfr (np. <code>SB-1234</code>)</td></tr>
-            <tr><td>BR-02</td><td>Segmenty lotu</td><td>Min. 1 wymagany; lot bezpośredni = 1 segment, z przesiadką = 2+</td></tr>
-            <tr><td>BR-03</td><td>Segment: departure/arrival</td><td><code>airportCode</code> – IATA 3 litery; <code>dateTime</code> – ISO 8601; arrival po departure; <code>durationMinutes</code> &gt; 0</td></tr>
-            <tr><td>BR-04</td><td>Segment: aircraft</td><td>Obiekt wymagany; <code>model</code> 1–100 znaków; <code>seatConfiguration</code> – wartości ≥ 0</td></tr>
-            <tr><td>BR-05</td><td>Cena bazowa i waluta</td><td><code>baseFare</code> ≥ 0.00, max 2 dec; <code>currency</code> ∈ {USD, EUR, GBP, PLN}</td></tr>
-            <tr><td>BR-06</td><td>Podatki</td><td>Opcjonalne; <code>code</code> 2 wielkie litery, unikalny; <code>amount</code> ≥ 0.00</td></tr>
-            <tr><td>BR-07</td><td>Opłaty</td><td>Opcjonalne; <code>feeCode</code> unikalny; <code>amount</code> ≥ 0.00; max 10 opłat</td></tr>
-            <tr><td>BR-08</td><td>Suma ceny</td><td>Auto: <code>baseFare + Σtaxes + Σfees − discount</code>; wartość musi być poprawna</td></tr>
-            <tr><td>BR-09</td><td>Rabat</td><td>Opcjonalny; <code>percentage</code> 0–100; <code>validUntil</code> nie w przeszłości</td></tr>
-            <tr><td>BR-10</td><td>Dostępne miejsca</td><td>Zmniejszane przy rezerwacji, przywracane przy anulowaniu</td></tr>
-            <tr><td>BR-11</td><td>Pasażerowie</td><td>Min. 1, max 9 na rezerwację</td></tr>
-            <tr><td>BR-12</td><td>Dane pasażera</td><td><code>firstName</code>/<code>lastName</code> 1–100 zn; <code>dateOfBirth</code> ISO; <code>email</code> poprawny; <code>phone</code> międzynarodowy</td></tr>
-            <tr><td>BR-13</td><td>Przydział miejsca</td><td><code>seatNumber</code> unikalny w locie; <code>class</code> ∈ {ECONOMY, BUSINESS, FIRST}; <code>type</code> ∈ {WINDOW, MIDDLE, AISLE}</td></tr>
-            <tr><td>BR-14</td><td>Płatność</td><td>Wymagana; <code>method</code> ∈ {CREDIT_CARD, DEBIT_CARD, BANK_TRANSFER, BLIK}; <code>cardDetails</code> wymagane dla kart</td></tr>
-            <tr><td>BR-15</td><td>Status rezerwacji</td><td>PENDING → CONFIRMED, PENDING → CANCELLED, CONFIRMED → CANCELLED; brak cofania</td></tr>
-            <tr><td>BR-16</td><td>Usunięcie lotu</td><td>Nie można usunąć lotu z rezerwacjami</td></tr>
-            <tr><td>BR-17</td><td>Przeliczanie walut</td><td>Poprawne przeliczanie między USD, EUR, GBP, PLN</td></tr>
-            <tr><td>BR-18</td><td>Paginacja</td><td>Domyślnie: page=0, size=10, max size=100</td></tr>
-            <tr><td>BR-19</td><td>Wyszukiwanie lotów</td><td>Case-insensitive, partial match</td></tr>
-            <tr><td>BR-20</td><td>HTTP Status Codes</td><td>POST → 201, DELETE → 204, Not Found → 404, Validation → 400</td></tr>
-          </tbody>
-        </table>
+          <h4>Bookings</h4>
+          <table>
+            <thead><tr><th>Method</th><th>Endpoint</th><th>Description</th></tr></thead>
+            <tbody>
+              <tr><td><code>GET</code></td><td><code>/api/v1/bookings?page=0&amp;size=10</code></td><td>List of bookings</td></tr>
+              <tr><td><code>GET</code></td><td><code>/api/v1/bookings/{id}</code></td><td>Booking details</td></tr>
+              <tr><td><code>POST</code></td><td><code>/api/v1/bookings</code></td><td>Create booking</td></tr>
+              <tr><td><code>PATCH</code></td><td><code>/api/v1/bookings/{id}/status</code></td><td>Update booking status</td></tr>
+            </tbody>
+          </table>
 
-        <h3>Oczekiwany format raportu błędu</h3>
-        <table>
-          <thead><tr><th>Pole</th><th>Opis</th></tr></thead>
-          <tbody>
-            <tr><td><strong>Tytuł</strong></td><td>Krótki, jednoznaczny opis problemu</td></tr>
-            <tr><td><strong>Kroki reprodukcji</strong></td><td>Numerowane kroki (endpoint, metoda, body)</td></tr>
-            <tr><td><strong>Oczekiwany rezultat</strong></td><td>Co powinno się stać wg reguł biznesowych</td></tr>
-            <tr><td><strong>Faktyczny rezultat</strong></td><td>Co faktycznie się dzieje</td></tr>
-            <tr><td><strong>Severity</strong></td><td>Critical / Major / Minor</td></tr>
-          </tbody>
-        </table>
+          <h4>Airports — read only</h4>
+          <table>
+            <thead><tr><th>Method</th><th>Endpoint</th><th>Description</th></tr></thead>
+            <tbody>
+              <tr><td><code>GET</code></td><td><code>/api/v1/airports</code></td><td>List of airports</td></tr>
+              <tr><td><code>GET</code></td><td><code>/api/v1/airports/{code}</code></td><td>Airport by IATA code</td></tr>
+            </tbody>
+          </table>
 
-        <div class="example-box">
-          <strong>Przykład raportu:</strong><br><br>
-          <strong>Tytuł:</strong> GET /api/v1/flights zwraca 500 zamiast pustej listy gdy brak lotów<br><br>
-          <strong>Kroki reprodukcji:</strong><br>
-          1. Usuń wszystkie loty<br>
-          2. Wyślij <code>GET /api/v1/flights</code><br><br>
-          <strong>Oczekiwany rezultat:</strong> 200 OK z pustą listą <code>{ "content": [], "totalElements": 0 }</code><br><br>
-          <strong>Faktyczny rezultat:</strong> 500 Internal Server Error<br><br>
-          <strong>Severity:</strong> Major
+          <h4>Pricing</h4>
+          <table>
+            <thead><tr><th>Method</th><th>Endpoint</th><th>Description</th></tr></thead>
+            <tbody>
+              <tr><td><code>GET</code></td><td><code>/api/v1/pricing/convert?amount=100&amp;from=EUR&amp;to=USD</code></td><td>Convert currency</td></tr>
+              <tr><td><code>GET</code></td><td><code>/api/v1/pricing/rates</code></td><td>Current exchange rates</td></tr>
+            </tbody>
+          </table>
+
+          <h3>Business Rules</h3>
+          <table class="rules-table">
+            <thead><tr><th>#</th><th>Rule</th><th>Description</th></tr></thead>
+            <tbody>
+              <tr><td>BR-01</td><td>Flight number</td><td>Required, unique, format: 2–3 letters + <code>-</code> + 1–5 digits (e.g. <code>SB-1234</code>)</td></tr>
+              <tr><td>BR-02</td><td>Flight segments</td><td>Min. 1 required; direct flight = 1 segment, connecting = 2+</td></tr>
+              <tr><td>BR-03</td><td>Segment: departure/arrival</td><td><code>airportCode</code> – IATA 3 letters; <code>dateTime</code> – ISO 8601; arrival after departure; <code>durationMinutes</code> &gt; 0</td></tr>
+              <tr><td>BR-04</td><td>Segment: aircraft</td><td>Object required; <code>model</code> 1–100 characters</td></tr>
+              <tr><td>BR-05</td><td>Base fare and currency</td><td><code>baseFare</code> ≥ 0.00, max 2 dec; <code>currency</code> ∈ {USD, EUR, GBP, PLN}</td></tr>
+              <tr><td>BR-06</td><td>Taxes</td><td>Optional; <code>code</code> 2 uppercase letters, unique; <code>amount</code> ≥ 0.00</td></tr>
+              <tr><td>BR-07</td><td>Fees</td><td>Optional; <code>feeCode</code> unique; <code>amount</code> ≥ 0.00; max 10 fees</td></tr>
+              <tr><td>BR-08</td><td>Total price</td><td>Auto: <code>baseFare + Σtaxes + Σfees − discount</code>; value must be correct</td></tr>
+              <tr><td>BR-09</td><td>Discount</td><td>Optional; <code>percentage</code> 0–100; <code>validUntil</code> not in the past</td></tr>
+              <tr><td>BR-10</td><td>Available seats</td><td>Decreased on booking, restored on cancellation</td></tr>
+              <tr><td>BR-11</td><td>Passengers</td><td>Min. 1, max 9 per booking</td></tr>
+              <tr><td>BR-12</td><td>Passenger data</td><td><code>firstName</code>/<code>lastName</code> 1–100 chars; <code>dateOfBirth</code> ISO; valid <code>email</code>; international <code>phone</code></td></tr>
+              <tr><td>BR-13</td><td>Seat assignment</td><td><code>seatNumber</code> unique per flight; <code>class</code> ∈ {ECONOMY, BUSINESS, FIRST}; <code>type</code> ∈ {WINDOW, MIDDLE, AISLE}</td></tr>
+              <tr><td>BR-14</td><td>Payment</td><td>Required; <code>method</code> ∈ {CREDIT_CARD, DEBIT_CARD, BANK_TRANSFER, BLIK}; <code>cardDetails</code> required for cards</td></tr>
+              <tr><td>BR-15</td><td>Booking status</td><td>PENDING → CONFIRMED, PENDING → CANCELLED, CONFIRMED → CANCELLED; no reversal</td></tr>
+              <tr><td>BR-16</td><td>Flight deletion</td><td>Cannot delete a flight with bookings</td></tr>
+              <tr><td>BR-17</td><td>Currency conversion</td><td>Correct conversion between USD, EUR, GBP, PLN</td></tr>
+              <tr><td>BR-18</td><td>Pagination</td><td>Default: page=0, size=10, max size=100</td></tr>
+              <tr><td>BR-19</td><td>Flight search</td><td>Case-insensitive, partial match</td></tr>
+              <tr><td>BR-20</td><td>HTTP Status Codes</td><td>POST → 201, DELETE → 204, Not Found → 404, Validation → 400</td></tr>
+            </tbody>
+          </table>
+
+          <h3>Expected bug report format</h3>
+          <table>
+            <thead><tr><th>Field</th><th>Description</th></tr></thead>
+            <tbody>
+              <tr><td><strong>Title</strong></td><td>Short, unambiguous problem description</td></tr>
+              <tr><td><strong>Steps to reproduce</strong></td><td>Numbered steps (endpoint, method, body)</td></tr>
+              <tr><td><strong>Expected result</strong></td><td>What should happen according to the business rules</td></tr>
+              <tr><td><strong>Actual result</strong></td><td>What actually happens</td></tr>
+              <tr><td><strong>Severity</strong></td><td>Critical / Major / Minor</td></tr>
+            </tbody>
+          </table>
+
+          <div class="example-box">
+            <strong>Report example:</strong><br><br>
+            <strong>Title:</strong> GET /api/v1/flights returns 500 instead of empty list when no flights exist<br><br>
+            <strong>Steps to reproduce:</strong><br>
+            1. Delete all flights<br>
+            2. Send <code>GET /api/v1/flights</code><br><br>
+            <strong>Expected result:</strong> 200 OK with empty list <code>{ "content": [], "totalElements": 0 }</code><br><br>
+            <strong>Actual result:</strong> 500 Internal Server Error<br><br>
+            <strong>Severity:</strong> Major
+          </div>
+
+          <h3>Test data</h3>
+          <p>API has preloaded data:</p>
+          <ul>
+            <li><strong>6 airports:</strong> WAW, FRA, LHR, JFK, CDG, BCN</li>
+            <li><strong>5 flights:</strong> SB-1234, SB-5678, SB-9012, SB-3456, SB-7890</li>
+            <li><strong>3 bookings</strong> (statuses: CONFIRMED, PENDING, CANCELLED)</li>
+            <li><strong>Currencies:</strong> EUR (base), USD, GBP, PLN</li>
+          </ul>
+          <div class="tip-box">
+            ℹ <strong>Note:</strong> The database is reset on every API restart.
+          </div>
+
+          <p class="good-luck">Good luck! 🚀</p>
         </div>
-
-        <h3>Dane testowe</h3>
-        <p>API posiada wstępnie załadowane dane:</p>
-        <ul>
-          <li><strong>6 lotnisk:</strong> WAW, FRA, LHR, JFK, CDG, BCN</li>
-          <li><strong>5 lotów:</strong> SB-1234, SB-5678, SB-9012, SB-3456, SB-7890</li>
-          <li><strong>3 rezerwacje</strong> (statusy: CONFIRMED, PENDING, CANCELLED)</li>
-          <li><strong>Waluty:</strong> EUR (bazowa), USD, GBP, PLN</li>
-        </ul>
-        <div class="tip-box">
-          ℹ <strong>Uwaga:</strong> Baza danych jest resetowana przy każdym restarcie API.
-        </div>
-
-        <p class="good-luck">Powodzenia! 🚀</p>
 
       </div>
     </div>
@@ -255,19 +393,19 @@
   <div class="modal-overlay" id="recruiterModal" onclick="closeRecruiterModal(event)">
     <div class="modal modal-wide">
       <div class="modal-header">
-        <h2>🔒 Arkusz rekrutera (POUFNE)</h2>
-        <button class="modal-close" onclick="document.getElementById('recruiterModal').classList.remove('open')" title="Zamknij">✕</button>
+        <h2 data-i18n="recruiter.modal.title">🔒 Arkusz rekrutera (POUFNE)</h2>
+        <button class="modal-close" onclick="document.getElementById('recruiterModal').classList.remove('open')" data-i18n-title="recruiter.modal.close" title="Zamknij">✕</button>
       </div>
       <div class="modal-body">
 
         <!-- Password gate -->
         <div id="recruiterGate" class="password-gate">
           <div class="gate-icon">🔐</div>
-          <p>Ten panel jest przeznaczony <strong>wyłącznie dla rekrutera</strong>.</p>
-          <p>Podaj hasło dostępu:</p>
+          <p data-i18n="recruiter.gate.intro">Ten panel jest przeznaczony <strong>wyłącznie dla rekrutera</strong>.</p>
+          <p data-i18n="recruiter.gate.prompt">Podaj hasło dostępu:</p>
           <div class="gate-input-row">
-            <input type="password" id="recruiterPassword" class="gate-input" placeholder="Hasło..." onkeydown="if(event.key==='Enter')checkRecruiterPassword()" />
-            <button class="gate-btn" onclick="checkRecruiterPassword()">Odblokuj</button>
+            <input type="password" id="recruiterPassword" class="gate-input" data-i18n-placeholder="recruiter.gate.placeholder" placeholder="Hasło..." onkeydown="if(event.key==='Enter')checkRecruiterPassword()" />
+            <button class="gate-btn" onclick="checkRecruiterPassword()" data-i18n="recruiter.gate.btn">Odblokuj</button>
           </div>
           <p id="gateError" class="gate-error"></p>
         </div>
@@ -279,6 +417,7 @@
     </div>
   </div>
 
+  <script src="i18n.js?v=1"></script>
   <script src="app.js?v=2"></script>
 </body>
 </html>

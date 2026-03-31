@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="pl" data-i18n-title="page.title.starter">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow, noai, noimageai" />
+  <title>SkyBook API — Test Starter Kit</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg-primary:   #1e1e2e;
+      --bg-secondary: #181825;
+      --bg-surface:   #252537;
+      --bg-hover:     #313145;
+      --border:       #45475a;
+      --text-primary: #cdd6f4;
+      --text-secondary:#a6adc8;
+      --text-muted:   #6c7086;
+      --accent:       #89b4fa;
+      --success:      #a6e3a1;
+      --warning:      #f9e2af;
+      --error:        #f38ba8;
+      --info:         #89dceb;
+      --purple:       #cba6f7;
+      --peach:        #fab387;
+      --font-mono:    'Cascadia Code', 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
+      --font-sans:    'Inter', 'Segoe UI', system-ui, sans-serif;
+      --radius:       6px;
+    }
+    html, body {
+      height: 100%;
+      font-family: var(--font-sans);
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      font-size: 14px;
+      line-height: 1.5;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* --- Topbar --- */
+    .topbar {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 10px 20px;
+      background: var(--bg-secondary);
+      border-bottom: 1px solid var(--border);
+      flex-shrink: 0;
+    }
+    .topbar-brand { font-size: 16px; font-weight: 700; color: var(--accent); letter-spacing: 0.5px; }
+    .topbar-brand a { color: inherit; text-decoration: none; }
+    .topbar-brand a:hover { text-decoration: underline; }
+    .topbar-links { display: flex; gap: 12px; align-items: center; }
+    .topbar-links a, .topbar-btn {
+      color: var(--text-secondary); text-decoration: none;
+      font-size: 13px; transition: color 0.2s;
+      background: none; border: none; cursor: pointer; font-family: var(--font-sans);
+    }
+    .topbar-links a:hover, .topbar-btn:hover { color: var(--accent); }
+
+    /* --- Page layout --- */
+    .page {
+      flex: 1; overflow-y: auto;
+      padding: 32px 40px;
+      max-width: 960px;
+      width: 100%;
+      margin: 0 auto;
+    }
+
+    /* --- Header --- */
+    .page-header { margin-bottom: 28px; }
+    .page-header h1 { font-size: 22px; font-weight: 700; color: var(--text-primary); margin-bottom: 8px; }
+    .page-header p { color: var(--text-secondary); line-height: 1.7; }
+
+    .badge {
+      display: inline-block; padding: 2px 10px; border-radius: 99px;
+      font-size: 12px; font-weight: 600;
+    }
+    .badge-java { background: rgba(249,226,175,0.15); color: var(--warning); border: 1px solid rgba(249,226,175,0.3); }
+    .badge-maven { background: rgba(243,139,168,0.15); color: var(--error); border: 1px solid rgba(243,139,168,0.3); }
+    .badge-rest  { background: rgba(166,227,161,0.15); color: var(--success); border: 1px solid rgba(166,227,161,0.3); }
+
+    /* --- Steps banner --- */
+    .steps {
+      display: flex; gap: 12px; margin-bottom: 32px; flex-wrap: wrap;
+    }
+    .step {
+      flex: 1; min-width: 180px;
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 14px 16px;
+    }
+    .step-num {
+      font-size: 11px; font-weight: 700;
+      color: var(--accent); text-transform: uppercase;
+      letter-spacing: 0.5px; margin-bottom: 4px;
+    }
+    .step-text { font-size: 13px; color: var(--text-secondary); line-height: 1.5; }
+    .step-text code { color: var(--accent); font-family: var(--font-mono); font-size: 12px; }
+
+    /* --- File tabs --- */
+    .file-tabs { display: flex; gap: 4px; margin-bottom: -1px; flex-wrap: wrap; }
+    .file-tab {
+      padding: 7px 16px;
+      font-size: 13px; font-family: var(--font-mono);
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-bottom: none;
+      border-radius: var(--radius) var(--radius) 0 0;
+      cursor: pointer; color: var(--text-secondary);
+      transition: all 0.15s;
+    }
+    .file-tab:hover { color: var(--text-primary); background: var(--bg-hover); }
+    .file-tab.active { background: var(--bg-secondary); color: var(--accent); border-color: var(--border); border-bottom-color: var(--bg-secondary); }
+
+    /* --- File block --- */
+    .file-block {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: 0 var(--radius) var(--radius) var(--radius);
+      margin-bottom: 32px;
+      position: relative;
+    }
+    .file-panel { display: none; }
+    .file-panel.active { display: block; }
+
+    .file-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 10px 16px;
+      border-bottom: 1px solid var(--border);
+    }
+    .file-path {
+      font-family: var(--font-mono); font-size: 12px;
+      color: var(--text-muted);
+    }
+    .file-path .dir { color: var(--text-muted); }
+    .file-path .name { color: var(--text-secondary); font-weight: 600; }
+
+    .copy-btn {
+      display: flex; align-items: center; gap: 6px;
+      padding: 4px 12px;
+      background: var(--bg-hover);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      color: var(--text-secondary);
+      font-size: 12px; font-family: var(--font-sans);
+      cursor: pointer; transition: all 0.15s;
+    }
+    .copy-btn:hover { border-color: var(--accent); color: var(--accent); }
+    .copy-btn.copied { border-color: var(--success); color: var(--success); }
+
+    /* --- Code --- */
+    pre {
+      padding: 16px 20px;
+      overflow-x: auto;
+      font-family: var(--font-mono);
+      font-size: 13px;
+      line-height: 1.65;
+      color: var(--text-primary);
+    }
+
+    /* Java syntax highlight classes */
+    .kw  { color: #cba6f7; }   /* keyword: class, void, new, return, import, static... */
+    .cl  { color: #89dceb; }   /* class name */
+    .fn  { color: #89b4fa; }   /* method name */
+    .st  { color: #a6e3a1; }   /* string / text block */
+    .cm  { color: #6c7086; font-style: italic; } /* comment */
+    .an  { color: #fab387; }   /* annotation */
+    .nu  { color: #fab387; }   /* number */
+    .op  { color: #89dceb; }   /* operator / punctuation accent */
+    .xml-tag   { color: #cba6f7; }
+    .xml-attr  { color: #89b4fa; }
+    .xml-val   { color: #a6e3a1; }
+    .xml-cm    { color: #6c7086; font-style: italic; }
+    .xml-text  { color: var(--text-primary); }
+
+    /* --- Info box --- */
+    .info-box {
+      background: rgba(137,180,250,0.08);
+      border: 1px solid rgba(137,180,250,0.25);
+      border-radius: var(--radius);
+      padding: 12px 16px;
+      font-size: 13px; color: var(--text-secondary);
+      line-height: 1.7;
+      margin-bottom: 32px;
+    }
+    .info-box strong { color: var(--accent); }
+    .info-box code { font-family: var(--font-mono); font-size: 12px; color: var(--warning); }
+
+    h2 { font-size: 16px; font-weight: 600; color: var(--text-secondary); margin-bottom: 14px; letter-spacing: 0.3px; }
+  </style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-brand"><a href="/">✈ SkyBook API</a></div>
+  <div class="topbar-links">
+    <a href="/">🖥 REST Client</a>
+    <a href="/logs.html"><span data-i18n="nav.logs">📊 Logi</span></a>
+    <a href="/swagger-ui.html" target="_blank">📄 Swagger</a>
+  </div>
+</header>
+
+<div class="page">
+
+  <div class="page-header">
+    <h1 data-i18n="starter.heading">🧪 Test Starter Kit</h1>
+    <p style="margin-bottom:10px" data-i18n-html="starter.subtitle">Gotowy szkielet projektu do automatycznych testów API. Skopiuj pliki do swojego IDE, zamień <code style="font-family:var(--font-mono);color:var(--warning)">BASE_URL</code> na adres API i zacznij pisać testy.</p>
+    <div style="display:flex;gap:8px;flex-wrap:wrap">
+      <span class="badge badge-java">Java 17</span>
+      <span class="badge badge-maven">Maven</span>
+      <span class="badge badge-rest">REST Assured 5</span>
+    </div>
+  </div>
+
+  <!-- Steps -->
+  <div class="steps">
+    <div class="step">
+      <div class="step-num" data-i18n="starter.step1.num">Krok 1</div>
+      <div class="step-text" data-i18n-html="starter.step1.desc">Skopiuj <code>pom.xml</code> do nowego projektu Maven w IDE</div>
+    </div>
+    <div class="step">
+      <div class="step-num" data-i18n="starter.step2.num">Krok 2</div>
+      <div class="step-text" data-i18n-html="starter.step2.desc">Utwórz pakiet <code>com.recruitment.skybook</code> w <code>src/test/java</code></div>
+    </div>
+    <div class="step">
+      <div class="step-num" data-i18n="starter.step3.num">Krok 3</div>
+      <div class="step-text" data-i18n-html="starter.step3.desc">Wklej <code>BaseTest.java</code> i <code>SkyBookApiTest.java</code></div>
+    </div>
+    <div class="step">
+      <div class="step-num" data-i18n="starter.step4.num">Krok 4</div>
+      <div class="step-text" data-i18n-html="starter.step4.desc">Uzupełnij testy dla znalezionych bugów i uruchom: <code>mvn test</code></div>
+    </div>
+  </div>
+
+  <!-- Info box -->
+  <div class="info-box">
+    <strong data-i18n="starter.tip.label">Wskazówka:</strong> <span data-i18n-html="starter.tip.body"><code>BaseTest.java</code> konfiguruje wspólny <code>RequestSpecification</code> z base URL, content-type i accept header. Każda klasa testowa rozszerza <code>BaseTest</code> i korzysta z pola <code>spec</code>. Jeden przykładowy test w <code>SkyBookApiTest.java</code> pokazuje wzorzec — Twoim zadaniem jest dopisanie testów dla znalezionych bugów.</span>
+  </div>
+
+  <!-- File viewer -->
+  <div class="file-tabs" id="tabs">
+    <div class="file-tab active" onclick="switchTab('pom')">pom.xml</div>
+    <div class="file-tab" onclick="switchTab('base')">BaseTest.java</div>
+    <div class="file-tab" onclick="switchTab('tests')">SkyBookApiTest.java</div>
+  </div>
+
+  <div class="file-block">
+
+    <!-- pom.xml -->
+    <div class="file-panel active" id="panel-pom">
+      <div class="file-header">
+        <span class="file-path"><span class="name">pom.xml</span></span>
+        <button class="copy-btn" onclick="copyCode('code-pom', this)" data-i18n="starter.copy">📋 Kopiuj</button>
+      </div>
+      <pre id="code-pom"><span class="xml-cm">&lt;!-- pom.xml --&gt;</span>
+<span class="xml-tag">&lt;project</span> <span class="xml-attr">xmlns</span>=<span class="xml-val">"http://maven.apache.org/POM/4.0.0"</span>
+         <span class="xml-attr">xmlns:xsi</span>=<span class="xml-val">"http://www.w3.org/2001/XMLSchema-instance"</span>
+         <span class="xml-attr">xsi:schemaLocation</span>=<span class="xml-val">"http://maven.apache.org/POM/4.0.0
+           http://maven.apache.org/xsd/maven-4.0.0.xsd"</span><span class="xml-tag">&gt;</span>
+
+  <span class="xml-tag">&lt;modelVersion&gt;</span><span class="xml-text">4.0.0</span><span class="xml-tag">&lt;/modelVersion&gt;</span>
+  <span class="xml-tag">&lt;groupId&gt;</span><span class="xml-text">com.recruitment</span><span class="xml-tag">&lt;/groupId&gt;</span>
+  <span class="xml-tag">&lt;artifactId&gt;</span><span class="xml-text">skybook-tests</span><span class="xml-tag">&lt;/artifactId&gt;</span>
+  <span class="xml-tag">&lt;version&gt;</span><span class="xml-text">1.0.0</span><span class="xml-tag">&lt;/version&gt;</span>
+
+  <span class="xml-tag">&lt;properties&gt;</span>
+    <span class="xml-tag">&lt;maven.compiler.source&gt;</span><span class="xml-text">17</span><span class="xml-tag">&lt;/maven.compiler.source&gt;</span>
+    <span class="xml-tag">&lt;maven.compiler.target&gt;</span><span class="xml-text">17</span><span class="xml-tag">&lt;/maven.compiler.target&gt;</span>
+    <span class="xml-tag">&lt;project.build.sourceEncoding&gt;</span><span class="xml-text">UTF-8</span><span class="xml-tag">&lt;/project.build.sourceEncoding&gt;</span>
+  <span class="xml-tag">&lt;/properties&gt;</span>
+
+  <span class="xml-tag">&lt;dependencies&gt;</span>
+
+    <span class="xml-cm">&lt;!-- REST Assured --&gt;</span>
+    <span class="xml-tag">&lt;dependency&gt;</span>
+      <span class="xml-tag">&lt;groupId&gt;</span><span class="xml-text">io.rest-assured</span><span class="xml-tag">&lt;/groupId&gt;</span>
+      <span class="xml-tag">&lt;artifactId&gt;</span><span class="xml-text">rest-assured</span><span class="xml-tag">&lt;/artifactId&gt;</span>
+      <span class="xml-tag">&lt;version&gt;</span><span class="xml-text">5.4.0</span><span class="xml-tag">&lt;/version&gt;</span>
+      <span class="xml-tag">&lt;scope&gt;</span><span class="xml-text">test</span><span class="xml-tag">&lt;/scope&gt;</span>
+    <span class="xml-tag">&lt;/dependency&gt;</span>
+
+    <span class="xml-cm">&lt;!-- JUnit 5 --&gt;</span>
+    <span class="xml-tag">&lt;dependency&gt;</span>
+      <span class="xml-tag">&lt;groupId&gt;</span><span class="xml-text">org.junit.jupiter</span><span class="xml-tag">&lt;/groupId&gt;</span>
+      <span class="xml-tag">&lt;artifactId&gt;</span><span class="xml-text">junit-jupiter</span><span class="xml-tag">&lt;/artifactId&gt;</span>
+      <span class="xml-tag">&lt;version&gt;</span><span class="xml-text">5.10.2</span><span class="xml-text"></span><span class="xml-tag">&lt;/version&gt;</span>
+      <span class="xml-tag">&lt;scope&gt;</span><span class="xml-text">test</span><span class="xml-tag">&lt;/scope&gt;</span>
+    <span class="xml-tag">&lt;/dependency&gt;</span>
+
+    <span class="xml-cm">&lt;!-- AssertJ --&gt;</span>
+    <span class="xml-tag">&lt;dependency&gt;</span>
+      <span class="xml-tag">&lt;groupId&gt;</span><span class="xml-text">org.assertj</span><span class="xml-tag">&lt;/groupId&gt;</span>
+      <span class="xml-tag">&lt;artifactId&gt;</span><span class="xml-text">assertj-core</span><span class="xml-tag">&lt;/artifactId&gt;</span>
+      <span class="xml-tag">&lt;version&gt;</span><span class="xml-text">3.25.3</span><span class="xml-tag">&lt;/version&gt;</span>
+      <span class="xml-tag">&lt;scope&gt;</span><span class="xml-text">test</span><span class="xml-tag">&lt;/scope&gt;</span>
+    <span class="xml-tag">&lt;/dependency&gt;</span>
+
+  <span class="xml-tag">&lt;/dependencies&gt;</span>
+
+  <span class="xml-tag">&lt;build&gt;</span>
+    <span class="xml-tag">&lt;plugins&gt;</span>
+      <span class="xml-tag">&lt;plugin&gt;</span>
+        <span class="xml-tag">&lt;groupId&gt;</span><span class="xml-text">org.apache.maven.plugins</span><span class="xml-tag">&lt;/groupId&gt;</span>
+        <span class="xml-tag">&lt;artifactId&gt;</span><span class="xml-text">maven-surefire-plugin</span><span class="xml-tag">&lt;/artifactId&gt;</span>
+        <span class="xml-tag">&lt;version&gt;</span><span class="xml-text">3.2.5</span><span class="xml-tag">&lt;/version&gt;</span>
+      <span class="xml-tag">&lt;/plugin&gt;</span>
+    <span class="xml-tag">&lt;/plugins&gt;</span>
+  <span class="xml-tag">&lt;/build&gt;</span>
+
+<span class="xml-tag">&lt;/project&gt;</span></pre>
+    </div>
+
+    <!-- BaseTest.java -->
+    <div class="file-panel" id="panel-base">
+      <div class="file-header">
+        <span class="file-path">
+          <span class="dir">src/test/java/com/recruitment/skybook/</span><span class="name">BaseTest.java</span>
+        </span>
+        <button class="copy-btn" onclick="copyCode('code-base', this)" data-i18n="starter.copy">📋 Kopiuj</button>
+      </div>
+      <pre id="code-base"><span class="kw">package</span> com.recruitment.skybook;
+
+<span class="kw">import</span> io.restassured.builder.<span class="cl">RequestSpecBuilder</span>;
+<span class="kw">import</span> io.restassured.http.<span class="cl">ContentType</span>;
+<span class="kw">import</span> io.restassured.specification.<span class="cl">RequestSpecification</span>;
+<span class="kw">import</span> org.junit.jupiter.api.<span class="cl">BeforeAll</span>;
+
+<span class="kw">public abstract class</span> <span class="cl">BaseTest</span> {
+
+    <span class="kw">protected static</span> <span class="cl">RequestSpecification</span> spec;
+
+    <span class="cm" data-lang="pl">// Zamiń na URL działającego API (lokalny lub hosted)</span><span class="cm" data-lang="en" style="display:none">// Replace with the working API URL (local or hosted)</span>
+    <span class="kw">static final</span> <span class="cl">String</span> BASE_URL = <span class="st">"http://localhost:8080"</span>;
+
+    <span class="an">@BeforeAll</span>
+    <span class="kw">static void</span> <span class="fn">setup</span>() {
+        spec = <span class="kw">new</span> <span class="cl">RequestSpecBuilder</span>()
+                .<span class="fn">setBaseUri</span>(BASE_URL)
+                .<span class="fn">setContentType</span>(<span class="cl">ContentType</span>.JSON)
+                .<span class="fn">setAccept</span>(<span class="cl">ContentType</span>.JSON)
+                .<span class="fn">build</span>();
+    }
+}</pre>
+    </div>
+
+    <!-- SkyBookApiTest.java -->
+    <div class="file-panel" id="panel-tests">
+      <div class="file-header">
+        <span class="file-path">
+          <span class="dir">src/test/java/com/recruitment/skybook/</span><span class="name">SkyBookApiTest.java</span>
+        </span>
+        <button class="copy-btn" onclick="copyCode('code-tests', this)" data-i18n="starter.copy">📋 Kopiuj</button>
+      </div>
+      <pre id="code-tests"><span class="kw">package</span> com.recruitment.skybook;
+
+<span class="kw">import</span> org.junit.jupiter.api.<span class="cl">Test</span>;
+
+<span class="kw">import static</span> io.restassured.<span class="cl">RestAssured</span>.<span class="fn">given</span>;
+<span class="kw">import static</span> org.hamcrest.<span class="cl">Matchers</span>.*;
+
+<span class="kw">public class</span> <span class="cl">SkyBookApiTest</span> <span class="kw">extends</span> <span class="cl">BaseTest</span> {
+
+    <span class="cm" data-lang="pl">// =========================================================
+    //  PRZYKŁAD — wzorzec testu (happy path)
+    //  Sprawdź, że GET /flights zwraca status 200 i listę
+    // =========================================================</span><span class="cm" data-lang="en" style="display:none">// =========================================================
+    //  EXAMPLE — test pattern (happy path)
+    //  Check that GET /flights returns status 200 and a list
+    // =========================================================</span>
+    <span class="an">@Test</span>
+    <span class="kw">void</span> <span class="fn">shouldReturnFlightsList</span>() {
+        <span class="fn">given</span>(spec)
+            .<span class="fn">when</span>()
+                .<span class="fn">get</span>(<span class="st">"/api/v1/flights"</span>)
+            .<span class="fn">then</span>()
+                .<span class="fn">statusCode</span>(<span class="nu">200</span>)
+                .<span class="fn">body</span>(<span class="st">"content"</span>, not(empty()));
+    }
+
+    <span class="cm" data-lang="pl">// =========================================================
+    //  TWOJE ZADANIE
+    //  Znajdź niezgodności z regułami biznesowymi i napisz
+    //  testy, które je dokumentują.
+    //
+    //  Poniżej: szablony dla typowych scenariuszy testowych.
+    //  Uzupełnij body requesta i asercje.
+    // =========================================================</span><span class="cm" data-lang="en" style="display:none">// =========================================================
+    //  YOUR TASK
+    //  Find discrepancies with the business rules and write
+    //  tests that document them.
+    //
+    //  Below: templates for typical test scenarios.
+    //  Complete the request body and assertions.
+    // =========================================================</span>
+
+    <span class="cm" data-lang="pl">// ---------------------------------------------------------
+    //  Szablon: weryfikacja HTTP status code na POST
+    // ---------------------------------------------------------</span><span class="cm" data-lang="en" style="display:none">// ---------------------------------------------------------
+    //  Template: HTTP status code verification on POST
+    // ---------------------------------------------------------</span>
+    <span class="an">@Test</span>
+    <span class="kw">void</span> <span class="fn">postFlightStatusCodeTest</span>() {
+        <span class="cl">String</span> body = <span class="st">"""
+                {
+                  "flightNumber": "TST-001",
+                  "airline": "Test Airlines",
+                  "status": "SCHEDULED",
+                  "segments": [{
+                    "segmentNumber": 1,
+                    "departure": { "airportCode": "WAW", "terminal": "A", "dateTime": "2026-09-01T10:00:00" },
+                    "arrival":   { "airportCode": "FRA", "terminal": "1", "dateTime": "2026-09-01T12:00:00" },
+                    "aircraft":  { "model": "Boeing 737" },
+                    "durationMinutes": 120
+                  }],
+                  "pricing": {
+                    "currency": "EUR",
+                    "baseFare": 100.00,
+                    "taxes": [{ "code": "YQ", "name": "Fuel Surcharge", "amount": 20.00 }],
+                    "fees": []
+                  }
+                }
+                """</span>;
+
+        <span class="fn">given</span>(spec)
+            .<span class="fn">body</span>(body)
+        .<span class="fn">when</span>()
+            .<span class="fn">post</span>(<span class="st">"/api/v1/flights"</span>)
+        .<span class="fn">then</span>()
+            .<span class="fn">statusCode</span>(<span class="nu">201</span>);
+    }
+
+    <span class="cm" data-lang="pl">// ---------------------------------------------------------
+    //  Szablon: walidacja niepoprawnego requestu
+    // ---------------------------------------------------------</span><span class="cm" data-lang="en" style="display:none">// ---------------------------------------------------------
+    //  Template: invalid request validation
+    // ---------------------------------------------------------</span>
+    <span class="an">@Test</span>
+    <span class="kw">void</span> <span class="fn">invalidBookingRequestShouldBeRejected</span>() {
+        <span class="cl">String</span> body = <span class="st">"""
+                {
+                  "flightId": 1,
+                  "passengers": [],
+                  "payment": {
+                    "method": "CREDIT_CARD",
+                    "currency": "EUR",
+                    "cardDetails": {
+                      "lastFourDigits": "4242",
+                      "brand": "VISA",
+                      "holderName": "Jan Kowalski"
+                    }
+                  }
+                }
+                """</span>;
+
+        <span class="fn">given</span>(spec)
+            .<span class="fn">body</span>(body)
+        .<span class="fn">when</span>()
+            .<span class="fn">post</span>(<span class="st">"/api/v1/bookings"</span>)
+        .<span class="fn">then</span>()
+            .<span class="fn">statusCode</span>(<span class="nu">400</span>);
+    }
+
+    <span class="cm" data-lang="pl">// ---------------------------------------------------------
+    //  Szablon: weryfikacja kalkulacji numerycznej
+    // ---------------------------------------------------------</span><span class="cm" data-lang="en" style="display:none">// ---------------------------------------------------------
+    //  Template: numerical calculation verification
+    // ---------------------------------------------------------</span>
+    <span class="an">@Test</span>
+    <span class="kw">void</span> <span class="fn">currencyConversionTest</span>() {
+        <span class="fn">given</span>(spec)
+        .<span class="fn">when</span>()
+            .<span class="fn">get</span>(<span class="st">"/api/v1/pricing/convert?amount=100&amp;from=EUR&amp;to=GBP"</span>)
+        .<span class="fn">then</span>()
+            .<span class="fn">statusCode</span>(<span class="nu">200</span>)
+            .<span class="fn">body</span>(<span class="st">"convertedAmount"</span>, notNullValue());
+    }
+
+    <span class="cm" data-lang="pl">// ---------------------------------------------------------
+    //  Szablon: weryfikacja wyszukiwania
+    // ---------------------------------------------------------</span><span class="cm" data-lang="en" style="display:none">// ---------------------------------------------------------
+    //  Template: search verification
+    // ---------------------------------------------------------</span>
+    <span class="an">@Test</span>
+    <span class="kw">void</span> <span class="fn">flightSearchTest</span>() {
+        <span class="fn">given</span>(spec)
+        .<span class="fn">when</span>()
+            .<span class="fn">get</span>(<span class="st">"/api/v1/flights/search?destination=frankfurt"</span>)
+        .<span class="fn">then</span>()
+            .<span class="fn">statusCode</span>(<span class="nu">200</span>)
+            .<span class="fn">body</span>(<span class="st">"content"</span>, notNullValue());
+    }
+
+    <span class="cm" data-lang="pl">// Dopisz własne testy dla znalezionych niezgodności z regułami biznesowymi</span><span class="cm" data-lang="en" style="display:none">// Add your own tests for the discrepancies you find with the business rules</span>
+}</pre>
+    </div>
+
+</div><!-- .page -->
+
+<script src="i18n.js?v=1"></script>
+<script>
+  function switchTab(name) {
+    document.querySelectorAll('.file-tab').forEach((t, i) => {
+      const names = ['pom', 'base', 'tests'];
+      t.classList.toggle('active', names[i] === name);
+    });
+    document.querySelectorAll('.file-panel').forEach(p => {
+      p.classList.toggle('active', p.id === 'panel-' + name);
+    });
+  }
+
+  function copyCode(id, btn) {
+    const el = document.getElementById(id);
+    // Strip HTML tags to get plain text
+    const text = el.innerText;
+    navigator.clipboard.writeText(text).then(() => {
+    btn.textContent = window.i18n ? window.i18n.t('starter.copied') : '✅ Skopiowano';
+      btn.classList.add('copied');
+      setTimeout(() => {
+        btn.textContent = window.i18n ? window.i18n.t('starter.copy') : '📋 Kopiuj';
+        btn.classList.remove('copied');
+      }, 2000);
+    });
+  }
+  window.addEventListener('langChanged', () => {
+    document.querySelectorAll('.copy-btn:not(.copied)').forEach(btn => {
+      btn.textContent = window.i18n.t('starter.copy');
+    });
+  });
+</script>
+</body>
+</html>

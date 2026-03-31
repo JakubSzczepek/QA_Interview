@@ -47,16 +47,16 @@ async function checkRecruiterPassword() {
       el.style.display = 'block';
       error.textContent = '';
     } else {
-      error.textContent = '\u274c Nieprawid\u0142owe has\u0142o';
+      error.textContent = window.i18n.t('err.wrongPassword');
       input.value = '';
       input.focus();
     }
   } catch (e) {
     console.error('[recruiter]', e);
-    error.textContent = '\u274c B\u0142\u0105d po\u0142\u0105czenia';
+    error.textContent = window.i18n.t('err.connection');
   } finally {
     btn.disabled = false;
-    btn.textContent = 'Odblokuj';
+    btn.textContent = window.i18n.t('recruiter.unlock');
   }
 }
 
@@ -98,13 +98,7 @@ const ENDPOINTS = {
             dateTime: "2026-06-15T10:45:00"
           },
           aircraft: {
-            model: "Boeing 737-800",
-            registration: "SP-LKE",
-            seatConfiguration: {
-              economy: 162,
-              business: 12,
-              first: 0
-            }
+            model: "Boeing 737-800"
           },
           durationMinutes: 135
         }
@@ -125,8 +119,7 @@ const ENDPOINTS = {
         economy: 150,
         business: 10,
         first: 0
-      },
-      tags: ["direct", "europe", "morning"]
+      }
     },
     label: 'POST Create Flight'
   },
@@ -153,13 +146,7 @@ const ENDPOINTS = {
             dateTime: "2026-06-15T11:15:00"
           },
           aircraft: {
-            model: "Boeing 737-800",
-            registration: "SP-LKE",
-            seatConfiguration: {
-              economy: 162,
-              business: 12,
-              first: 0
-            }
+            model: "Boeing 737-800"
           },
           durationMinutes: 135
         }
@@ -184,8 +171,7 @@ const ENDPOINTS = {
         economy: 148,
         business: 10,
         first: 0
-      },
-      tags: ["direct", "europe", "delayed"]
+      }
     },
     label: 'PUT Update Flight'
   },
@@ -228,8 +214,7 @@ const ENDPOINTS = {
           baggage: [
             { type: "CHECKED", weightKg: 23, count: 1 },
             { type: "CABIN", weightKg: 8, count: 1 }
-          ],
-          specialRequests: ["VEGETARIAN_MEAL"]
+          ]
         }
       ],
       payment: {
@@ -246,6 +231,12 @@ const ENDPOINTS = {
       }
     },
     label: 'POST Create Booking'
+  },
+  getAllBookings: {
+    method: 'GET',
+    url: '/api/v1/bookings?page=0&size=10',
+    body: null,
+    label: 'GET All Bookings'
   },
   getBookingById: {
     method: 'GET',

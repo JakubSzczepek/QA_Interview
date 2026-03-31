@@ -27,8 +27,6 @@ public class FlightRequest {
     @Valid
     private PricingRequestDto pricing;
 
-    private List<String> tags;
-
     @Data @NoArgsConstructor @AllArgsConstructor @Builder
     public static class SegmentRequestDto {
         @Min(value = 1, message = "Segment number must be >= 1")
@@ -66,11 +64,6 @@ public class FlightRequest {
         @NotBlank(message = "Aircraft model is required")
         @Size(max = 100, message = "Aircraft model max 100 characters (BR-04)")
         private String model;
-
-        private String registration;
-
-        @Valid
-        private SeatConfigurationDto seatConfiguration;
     }
 
     @Data @NoArgsConstructor @AllArgsConstructor @Builder

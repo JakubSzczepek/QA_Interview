@@ -12,7 +12,6 @@ public class FlightResponse {
     private List<SegmentDto> segments;
     private PricingDto pricing;
     private SeatConfigurationDto availableSeats;
-    private List<String> tags;
     private String createdAt;
     private String updatedAt;
 }

@@ -215,9 +215,6 @@ public class BookingService {
             pb.seatClass(dto.getSeatAssignment().getSeatClass());
             pb.seatType(dto.getSeatAssignment().getType());
         }
-        if (dto.getSpecialRequests() != null) {
-            pb.specialRequests(new ArrayList<>(dto.getSpecialRequests()));
-        }
 
         Passenger passenger = pb.build();
 
@@ -280,7 +277,6 @@ public class BookingService {
                             .build())
                     .seatAssignment(seat)
                     .baggage(baggageDtos)
-                    .specialRequests(p.getSpecialRequests())
                     .build();
         }).collect(Collectors.toList());
 

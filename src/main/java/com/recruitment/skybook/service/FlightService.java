@@ -81,7 +81,6 @@ public class FlightService {
         existing.getSegments().clear();
         existing.getTaxes().clear();
         existing.getFees().clear();
-        existing.getTags().clear();
 
         // Map new data
         existing.setFlightNumber(request.getFlightNumber());
@@ -135,10 +134,6 @@ public class FlightService {
                 Segment seg = mapSegmentRequest(segDto, existing);
                 existing.getSegments().add(seg);
             }
-        }
-
-        if (request.getTags() != null) {
-            existing.getTags().addAll(request.getTags());
         }
 
         // BUG-08: totalAmount does NOT include fees
@@ -234,7 +229,6 @@ public class FlightService {
                 .flightNumber(request.getFlightNumber())
                 .airline(request.getAirline())
                 .status(request.getStatus() != null ? request.getStatus() : "SCHEDULED")
-                .tags(request.getTags() != null ? new ArrayList<>(request.getTags()) : new ArrayList<>())
                 .build();
 
         if (request.getPricing() != null) {
@@ -302,12 +296,6 @@ public class FlightService {
         }
         if (segDto.getAircraft() != null) {
             sb.aircraftModel(segDto.getAircraft().getModel());
-            sb.aircraftRegistration(segDto.getAircraft().getRegistration());
-            if (segDto.getAircraft().getSeatConfiguration() != null) {
-                sb.seatConfigEconomy(segDto.getAircraft().getSeatConfiguration().getEconomy());
-                sb.seatConfigBusiness(segDto.getAircraft().getSeatConfiguration().getBusiness());
-                sb.seatConfigFirst(segDto.getAircraft().getSeatConfiguration().getFirst());
-            }
         }
 
         return sb.build();
@@ -332,12 +320,6 @@ public class FlightService {
                         .build())
                 .aircraft(AircraftDto.builder()
                         .model(seg.getAircraftModel())
-                        .registration(seg.getAircraftRegistration())
-                        .seatConfiguration(SeatConfigurationDto.builder()
-                                .economy(seg.getSeatConfigEconomy())
-                                .business(seg.getSeatConfigBusiness())
-                                .first(seg.getSeatConfigFirst())
-                                .build())
                         .build())
                 .durationMinutes(seg.getDurationMinutes())
                 .build()
@@ -388,7 +370,6 @@ public class FlightService {
                         .business(flight.getAvailableSeatsBusiness())
                         .first(flight.getAvailableSeatsFirst())
                         .build())
-                .tags(flight.getTags())
                 .createdAt(flight.getCreatedAt() != null ? flight.getCreatedAt().toString() : null)
                 .updatedAt(flight.getUpdatedAt() != null ? flight.getUpdatedAt().toString() : null)
                 .build();

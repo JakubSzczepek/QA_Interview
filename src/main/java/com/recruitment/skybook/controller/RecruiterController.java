@@ -75,8 +75,8 @@ public class RecruiterController {
             <thead><tr><th>Czas</th><th>Faza</th><th>Notatki</th></tr></thead>
             <tbody>
               <tr><td>0–2 min</td><td><strong>Wprowadzenie</strong></td><td>„SkyBook to API rezerwacji lotów. Na stronie głównej masz REST Client z gotowymi requestami. Jest też Swagger. Kliknij „Zadanie" — tam są reguły biznesowe. Przetestuj i zaraportuj bugi."</td></tr>
-              <tr><td>2–25 min</td><td><strong>Testowanie</strong></td><td>Obserwuj podejście. Czy ma strategię? Odpowiadaj na pytania o kontekst, ale nie naprowadzaj na bugi.</td></tr>
-              <tr><td>25–30 min</td><td><strong>Podsumowanie</strong></td><td>Kandydat prezentuje bugi. Notuj jakość raportów.</td></tr>
+              <tr><td>2–35 min</td><td><strong>Testowanie</strong></td><td>Obserwuj podejście. Czy ma strategię? Odpowiadaj na pytania o kontekst, ale nie naprowadzaj na bugi.</td></tr>
+              <tr><td>35–45 min</td><td><strong>Podsumowanie</strong></td><td>Kandydat prezentuje bugi. Notuj jakość raportów.</td></tr>
             </tbody>
           </table>
 
